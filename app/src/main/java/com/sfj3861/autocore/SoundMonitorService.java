@@ -33,9 +33,10 @@ public class SoundMonitorService extends Service {
                     float score=SoundFingerprint.similarity(target,current);
                     if(score>=getSharedPreferences("autocore",0).getFloat("match_threshold",0.91f)&&System.currentTimeMillis()-last>1800){
                         last=System.currentTimeMillis();
-                        boolean sent=AutoCoreIme.sendConfiguredKey(this);
-                        if(!sent)showNotice("Sonido reconocido","Activa AutoCore Keyboard y enfoca un campo de texto para enviar la tecla configurada.");
-                        else showNotice("Automatización ejecutada","Sonido reconocido: tecla "+getSharedPreferences("autocore",0).getString("sound_key","[SPACE]"));
+                        boolean gesture=getSharedPreferences("autocore",0).getBoolean("gesture_enabled",false);
+                        boolean sent=gesture?AutoCoreAccessibilityService.tapConfigured(this):AutoCoreIme.sendConfiguredKey(this);
+                        if(!sent)showNotice("Sonido reconocido",gesture?"Activa AutoCore en Accesibilidad para permitir el toque en pantalla.":"Activa AutoCore Keyboard y enfoca un campo de texto para enviar la tecla configurada.");
+                        else showNotice("Automatización ejecutada",gesture?"Sonido reconocido: toque táctil enviado.":"Sonido reconocido: tecla "+getSharedPreferences("autocore",0).getString("sound_key","[SPACE]"));
                     }
                 }
             }
