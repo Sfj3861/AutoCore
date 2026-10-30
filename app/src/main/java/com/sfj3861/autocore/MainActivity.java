@@ -128,7 +128,7 @@ public class MainActivity extends Activity {
         try{
             if(recorder!=null)recorder.release();
             sampleFile=new File(getFilesDir(),"sound_sample.m4a");
-            recorder=new MediaRecorder(this);recorder.setAudioSource(MediaRecorder.AudioSource.MIC);recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);recorder.setMaxDuration(5000);recorder.setOutputFile(sampleFile.getAbsolutePath());recorder.setOnInfoListener((mr,what,extra)->stopRecording());recorder.prepare();recorder.start();
+            recorder=new MediaRecorder();recorder.setAudioSource(MediaRecorder.AudioSource.MIC);recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);recorder.setMaxDuration(5000);recorder.setOutputFile(sampleFile.getAbsolutePath());recorder.setOnInfoListener((mr,what,extra)->stopRecording());recorder.prepare();recorder.start();
             soundStatus.setText("Grabando muestra… se detendrá automáticamente a los 5 segundos.");
         }catch(Exception e){soundStatus.setText("No se pudo iniciar la grabación: "+e.getMessage());}
     }
