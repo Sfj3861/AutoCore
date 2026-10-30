@@ -16,7 +16,7 @@
         </service>
         <receiver android:name=".ScheduleReceiver" android:exported="false"/>
         <receiver android:name=".BootReceiver" android:enabled="true" android:exported="false">
-            <intent-filter><action android:name="android.intent.action.BOOT_COMPLETED"/></intent-filter>
+            <intent-filter><action android:name="android.intent.action.BOOT_COMPLETED"/><action android:name="android.intent.action.TIME_SET"/><action android:name="android.intent.action.TIMEZONE_CHANGED"/></intent-filter>
         </receiver>
     </application>
 </manifest>
