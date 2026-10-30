@@ -20,7 +20,7 @@ public class SoundMonitorService extends Service {
     }
     private void listen(){
         float[] target=SoundFingerprint.decode(getSharedPreferences("autocore",0).getString("fingerprint",""));
-        if(target==null){running.set(false);stopSelf();return;}
+        if(target==null){running.set(false);getSharedPreferences("autocore",0).edit().putBoolean("monitor_ui",false).apply();stopSelf();return;}
         int rate=16000, frame=1024, min=AudioRecord.getMinBufferSize(rate,AudioFormat.CHANNEL_IN_MONO,AudioFormat.ENCODING_PCM_16BIT);
         AudioRecord recorder=new AudioRecord(MediaRecorder.AudioSource.MIC,rate,AudioFormat.CHANNEL_IN_MONO,AudioFormat.ENCODING_PCM_16BIT,Math.max(min,frame*4));
         try{
@@ -40,12 +40,12 @@ public class SoundMonitorService extends Service {
                 }
             }
         }catch(Exception e){showNotice("Detector detenido",e.getMessage()==null?"Error de audio":e.getMessage());}
-        finally{try{recorder.stop();}catch(Exception ignored){}recorder.release();running.set(false);stopForeground(STOP_FOREGROUND_REMOVE);}
+        finally{try{recorder.stop();}catch(Exception ignored){}recorder.release();running.set(false);getSharedPreferences("autocore",0).edit().putBoolean("monitor_ui",false).apply();stopForeground(STOP_FOREGROUND_REMOVE);}
     }
     private void showNotice(String title,String message){
         Notification n=new Notification.Builder(this,CHANNEL).setSmallIcon(android.R.drawable.ic_dialog_info).setContentTitle(title).setContentText(message).setAutoCancel(true).build();
         ((NotificationManager)getSystemService(NOTIFICATION_SERVICE)).notify((int)(System.currentTimeMillis()%100000),n);
     }
-    @Override public void onDestroy(){running.set(false);if(worker!=null)worker.interrupt();super.onDestroy();}
+    @Override public void onDestroy(){running.set(false);getSharedPreferences("autocore",0).edit().putBoolean("monitor_ui",false).apply();if(worker!=null)worker.interrupt();super.onDestroy();}
     @Override public android.os.IBinder onBind(Intent intent){return null;}
 }
