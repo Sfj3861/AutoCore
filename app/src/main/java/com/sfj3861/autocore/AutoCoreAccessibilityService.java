@@ -38,6 +38,7 @@ public class AutoCoreAccessibilityService extends AccessibilityService {
         GestureDescription.StrokeDescription stroke =
                 new GestureDescription.StrokeDescription(path, 0, 65);
         GestureDescription gesture = new GestureDescription.Builder().addStroke(stroke).build();
-        return service.dispatchGesture(gesture, null, null);
+        service.handler.post(() -> service.dispatchGesture(gesture, null, null));
+        return true;
     }
 }
