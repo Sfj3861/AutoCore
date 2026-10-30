@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
@@ -7,22 +8,12 @@
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY"/>
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
-    <application android:allowBackup="true" android:label="AutoCore" android:theme="@android:style/Theme.Material.NoActionBar" android:supportsRtl="true">
-        <activity android:name=".MainActivity" android:exported="true">
-            <intent-filter><action android:name="android.intent.action.MAIN"/><category android:name="android.intent.category.LAUNCHER"/></intent-filter>
-        </activity>
+    <application android:allowBackup="true" android:label="AutoCore" android:icon="@drawable/ic_autocore" android:theme="@android:style/Theme.Material.NoActionBar" android:supportsRtl="true">
+        <activity android:name=".MainActivity" android:exported="true"><intent-filter><action android:name="android.intent.action.MAIN"/><category android:name="android.intent.category.LAUNCHER"/></intent-filter></activity>
         <service android:name=".SoundMonitorService" android:exported="false" android:foregroundServiceType="microphone"/>
-        <service android:name=".AutoCoreAccessibilityService" android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE" android:exported="true">
-            <intent-filter><action android:name="android.accessibilityservice.AccessibilityService"/></intent-filter>
-            <meta-data android:name="android.accessibilityservice" android:resource="@xml/accessibility_service"/>
-        </service>
-        <service android:name=".AutoCoreIme" android:label="AutoCore Keyboard" android:permission="android.permission.BIND_INPUT_METHOD" android:exported="true">
-            <intent-filter><action android:name="android.view.InputMethod"/></intent-filter>
-            <meta-data android:name="android.view.im" android:resource="@xml/method"/>
-        </service>
+        <service android:name=".AutoCoreAccessibilityService" android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE" android:exported="true"><intent-filter><action android:name="android.accessibilityservice.AccessibilityService"/></intent-filter><meta-data android:name="android.accessibilityservice" android:resource="@xml/accessibility_service"/></service>
+        <service android:name=".AutoCoreIme" android:label="AutoCore Keyboard" android:permission="android.permission.BIND_INPUT_METHOD" android:exported="true"><intent-filter><action android:name="android.view.InputMethod"/></intent-filter><meta-data android:name="android.view.im" android:resource="@xml/method"/></service>
         <receiver android:name=".ScheduleReceiver" android:exported="false"/>
-        <receiver android:name=".BootReceiver" android:enabled="true" android:exported="false">
-            <intent-filter><action android:name="android.intent.action.BOOT_COMPLETED"/><action android:name="android.intent.action.TIME_SET"/><action android:name="android.intent.action.TIMEZONE_CHANGED"/></intent-filter>
-        </receiver>
+        <receiver android:name=".BootReceiver" android:enabled="true" android:exported="false"><intent-filter><action android:name="android.intent.action.BOOT_COMPLETED"/><action android:name="android.intent.action.TIME_SET"/><action android:name="android.intent.action.TIMEZONE_CHANGED"/></intent-filter></receiver>
     </application>
 </manifest>
