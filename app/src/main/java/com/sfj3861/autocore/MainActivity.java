@@ -100,6 +100,17 @@ public class MainActivity extends Activity {
             Toast.makeText(this,"Configuración guardada.",Toast.LENGTH_SHORT).show();
         });
         btn("Detener detector ahora",this::stopMonitor);
+
+        card("Acción táctil para Geometry Dash","Cuando se reconozca la muestra, AutoCore puede simular un toque en la pantalla. Debes conceder el permiso de accesibilidad.");
+        CheckBox touch=new CheckBox(this);touch.setText("Usar toque táctil (en vez del teclado)");touch.setTextColor(Color.WHITE);touch.setChecked(p.getBoolean("gesture_enabled",false));body.addView(touch);
+        EditText xPos=new EditText(this);xPos.setSingleLine(true);xPos.setInputType(2);xPos.setTextColor(Color.WHITE);xPos.setHintTextColor(MUTED);xPos.setHint("X en porcentaje (0–100)");xPos.setText(String.valueOf(p.getInt("gesture_x",50)));body.addView(txt("Posición horizontal",13,Color.WHITE,true));body.addView(xPos);
+        EditText yPos=new EditText(this);yPos.setSingleLine(true);yPos.setInputType(2);yPos.setTextColor(Color.WHITE);yPos.setHintTextColor(MUTED);yPos.setHint("Y en porcentaje (0–100)");yPos.setText(String.valueOf(p.getInt("gesture_y",50)));body.addView(txt("Posición vertical",13,Color.WHITE,true));body.addView(yPos);
+        btn("Guardar acción táctil",()->{
+            try{int x=Integer.parseInt(xPos.getText().toString()),y=Integer.parseInt(yPos.getText().toString());if(x<0||x>100||y<0||y>100)throw new Exception();p.edit().putInt("gesture_x",x).putInt("gesture_y",y).putBoolean("gesture_enabled",touch.isChecked()).apply();Toast.makeText(this,"Acción táctil guardada.",Toast.LENGTH_SHORT).show();}
+            catch(Exception e){Toast.makeText(this,"Usa porcentajes entre 0 y 100.",Toast.LENGTH_SHORT).show();}
+        });
+        btn("Autorizar servicio de accesibilidad",()->startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)));
+        btn("Probar toque configurado",()->{if(!p.getBoolean("gesture_enabled",false)){Toast.makeText(this,"Activa y guarda primero la acción táctil.",Toast.LENGTH_SHORT).show();return;}if(!AutoCoreAccessibilityService.tapConfigured(this))Toast.makeText(this,"Activa AutoCore en Accesibilidad y vuelve a probar.",Toast.LENGTH_LONG).show();});
         card("Compatibilidad de teclas","AutoCore Keyboard puede enviar SPACE, ENTER, TAB, borrar y texto a un campo de texto enfocado. Android no permite inyectar arbitrariamente teclas físicas en cualquier juego o aplicación; para esos casos la acción puede no estar disponible.");
         card("Privacidad y RAM","El micrófono solo se mantiene activo mientras el detector esté habilitado. Al detenerlo se libera AudioRecord. La muestra se almacena como un pequeño perfil numérico.");
     }
